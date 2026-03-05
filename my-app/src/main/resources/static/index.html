@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps POC 3 - Home</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="badge" id="env-badge">Loading environment...</div>
+        <h1>Welcome to DevOps POC 3</h1>
+        <p>Branch-Based Deployment using GitHub Actions</p>
+        <p>This app deploys to different environments based on the Git branch that triggered the pipeline.</p>
+        <ul>
+            <li><strong>main</strong> → Production Environment</li>
+            <li><strong>develop</strong> → Development Environment</li>
+            <li><strong>feature/*</strong> → Build Only (no deploy)</li>
+        </ul>
+        <nav>
+            <a href="index.html">Home</a> |
+            <a href="about.html">About</a>
+        </nav>
+    </div>
+    <script>
+        fetch('/api/status')
+            .then(r => r.text())
+            .then(text => {
+                const badge = document.getElementById('env-badge');
+                badge.textContent = text;
+                if (text.includes('prod')) badge.style.background = '#e74c3c';
+                else if (text.includes('dev')) badge.style.background = '#2ecc71';
+            })
+            .catch(() => document.getElementById('env-badge').textContent = 'API Offline');
+    </script>
+</body>
+
+</html>
